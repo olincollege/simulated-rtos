@@ -37,6 +37,9 @@ set(CMAKE_C_CLANG_TIDY "clang-tidy")
 # Include the source files.
 add_subdirectory(src)
 
+# Include extra CMake configs
+add_subdirectory(cmake)
+
 # In current courses that teach C, we use the Criterion testing framework. If
 # If you want to use a different framework, or if you want to skip testing
 # entirely (not recommended), change the lines below.
