@@ -10,4 +10,4 @@
 # signatures/types (INTERFACE), or both (PUBLIC).
 
 
-add_executable(main main.c);
+add_executable(sim_rtos.elf main.c)

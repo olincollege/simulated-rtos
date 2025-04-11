@@ -2,49 +2,73 @@
 # of Ubuntu, which at the time of writing is 22.04.
 cmake_minimum_required(VERSION 3.22)
 
-# TODO: Define a good project in the line below. If applicable, list other
-# languages in this project managed by CMake.
-project(ProjectTitle
+project(SimulatedRTOS
   VERSION 1.0
   LANGUAGES C
 )
 
-# Use the latest C standard supported by Clang and LLVM in the latest LTS
-# version of Ubuntu.
-set(CMAKE_C_STANDARD 17)
+# Most embedded systems conform to C99 and might not have more modern functionality
+set(CMAKE_C_STANDARD 99)
 
-set(CMAKE_C_FLAGS "-Wall -Wextra")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wconversion")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wdouble-promotion")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wduplicated-branches")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wduplicated-cond")
-# The following line is only needed in LLVM/clang
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wimplicit-fallthrough")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wlogical-op")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmisleading-indentation")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wnull-dereference")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wshadow")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wsign-conversion")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunreachable-code")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunused")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
+# Tell CMake we are cross‑compiling for ARM microcontroller
+set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/cmake/arm-gcc-toolchain.cmake)
 
-# No options are set here because the configuration is set in .clang-tidy
-# instead. If that file is not present, clang-tidy will be of limited help.
-set(CMAKE_C_CLANG_TIDY "clang-tidy")
-
-# Include the source files.
+# Include the source files. src subdirectory defines the executable "sim_rtos.elf"
 add_subdirectory(src)
+target_compile_definitions(sim_rtos.elf PRIVATE STM32F4)
+
+# Add the STM Discovery chip startup file as a source for sim_rtos.elf
+target_sources(sim_rtos.elf PRIVATE startup/startup_stm32f407xx.s)
 
 # Include extra CMake configs
 add_subdirectory(cmake)
 
-# In current courses that teach C, we use the Criterion testing framework. If
-# If you want to use a different framework, or if you want to skip testing
-# entirely (not recommended), change the lines below.
-include(CTest)
-find_library(CRITERION criterion REQUIRED)
-set(CRITERION_FLAGS --verbose -j1)
 
-add_subdirectory(test)
+# ---------------------------------------------------------------------------
+# Paths to headers & libraries
+# ---------------------------------------------------------------------------
+set(LIBOPENCM3_DIR ${CMAKE_SOURCE_DIR}/lib/libopencm3)
+
+include(ExternalProject)
+
+ExternalProject_Add(libopencm3
+    PREFIX ${CMAKE_BINARY_DIR}/libopencm3
+    SOURCE_DIR ${LIBOPENCM3_DIR}
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND make CC=arm-none-eabi-gcc
+    BUILD_IN_SOURCE 1
+    INSTALL_COMMAND ""
+)
+
+# Add libopencm3 as a dependency for sim_rtos.elf
+target_link_libraries(sim_rtos.elf PRIVATE ${LIBOPENCM3_DIR}/lib/libopencm3_stm32f4.a)
+add_dependencies(sim_rtos.elf libopencm3)
+
+target_include_directories(sim_rtos.elf PRIVATE
+    ${LIBOPENCM3_DIR}/include
+    ${CMAKE_SOURCE_DIR}/startup)
+
+link_directories(${LIBOPENCM3_DIR}/lib)
+
+# ---------------------------------------------------------------------------
+# Flags
+# ---------------------------------------------------------------------------
+
+# Compiler warnings
+set(CMAKE_C_FLAGS "-Wall -Wextra")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wdouble-promotion")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wduplicated-branches")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wduplicated-cond")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmisleading-indentation")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunused")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
+
+# Flags specific to cross compilation for ARM M4 Cortex
+set(CPU_FLAGS "-mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard")
+set(COMMON_FLAGS "-ffunction-sections -fdata-sections ${CPU_FLAGS}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COMMON_FLAGS}")
+
+set(CMAKE_EXE_LINKER_FLAGS
+    "${CPU_FLAGS} \
+     -nostartfiles \
+     -Wl,-T,${CMAKE_SOURCE_DIR}/linker/stm32f407vg_flash.ld,--gc-sections")
