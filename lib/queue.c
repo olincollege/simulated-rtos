@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 
+#include "task.h"
+
 int queue_size = 0;
 // return queue length
 // pop the highest priority
@@ -26,4 +28,4 @@ void init_task_queue() {
 
 int queue_is_empty(void) { return queue_size == 0; }
 int insert_task(int task_id, int priority_num) {}
-pop_task  // returns task ID?
+TaskControlBlock* pop_task  // returns task ID?
