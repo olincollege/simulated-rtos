@@ -11,7 +11,7 @@ int queue_size = 0;
 //
 
 /* Task Queue (Priority queue, add task and sort, remove no need to sort) */
-static TaskControlBlock gs_task_queue[MAX_NUMBER_OF_TASKS];
+static struct TaskControlBlock gs_task_queue[MAX_NUMBER_OF_TASKS];
 /* Task queue length */
 static uint32_t task_queue_len;
 /* Id for the task (must be unique for all the active tasks) */
@@ -28,4 +28,4 @@ void init_task_queue() {
 
 int queue_is_empty(void) { return queue_size == 0; }
 int insert_task(int task_id, int priority_num) {}
-TaskControlBlock* pop_task  // returns task ID?
+struct TaskControlBlock* pop_task  // returns task ID?

@@ -1,5 +1,7 @@
+#include "task.h"
+
 typedef struct QueueNode {
-  TaskControlBlock* task;
+  struct TaskControlBlock* task;
   struct QueueNode* next;
 } QueueNode;
 
