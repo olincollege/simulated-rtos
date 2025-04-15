@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stddef.h>  // size_t
+
 #include "task.h"
 
 typedef struct QueueNode {
