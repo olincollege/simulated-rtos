@@ -1,13 +1,13 @@
 #pragma once
 
-typedef void (*Task_func)();
+typedef void (*TaskFunc)();
 // a pointer to a function that takes in nothing and returns void
-struct TaskControlBlock {
-  Task_func func;
+typedef struct TaskControlBlock {
+  TaskFunc func;
   int priority;
   int is_active;
   // task ID
-};
+} TaskControlBlock;
 
 void task_1(void);
 void task_2(void);

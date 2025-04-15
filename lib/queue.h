@@ -1,7 +1,7 @@
 #include "task.h"
 
 typedef struct QueueNode {
-  struct TaskControlBlock* task;
+  struct TaskControlBlock* tcb;
   struct QueueNode* next;
 } QueueNode;
 
@@ -10,4 +10,6 @@ typedef struct {
   QueueNode* last;   // pointer to the last task in queue
   int length;        // length of queue
 } Queue;
-void enqueue(Queue* q, QueueNode new_task);
+void enqueue(Queue* q, QueueNode* new_task);
+
+QueueNode* pop(Queue* q);

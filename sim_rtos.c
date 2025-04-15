@@ -78,16 +78,29 @@ int main(void) {
 
   printf("hello world! -Zbee\n");
 
-  bool button_is_pressed = false;
+  // Initialize tasks
+  TaskControlBlock tcb_1 = {task_1, 0, 0};
+  TaskControlBlock tcb_2 = {task_2, 0, 0};
+  TaskControlBlock tcb_3 = {task_3, 0, 0};
 
-  while (1) {
-    if (!button_is_pressed && gpio_get(GPIOA, GPIO0)) {
-      button_is_pressed = true;
-    } else if (button_is_pressed && !gpio_get(GPIOA, GPIO0)) {
-      printf("button pressed\n");
-      button_is_pressed = false;
-    }
-  }
+  QueueNode task_3 = {&tcb_3, NULL};
+  QueueNode task_2 = {&tcb_2, &task_3};
+  QueueNode task_1 = {&tcb_1, &task_2};
+
+  Queue queue = {&task_1, &task_3, 3};
+
+  run_scheduler(&queue);
+
+  // bool button_is_pressed = false;
+
+  // while (1) {
+  //   if (!button_is_pressed && gpio_get(GPIOA, GPIO0)) {
+  //     button_is_pressed = true;
+  //   } else if (button_is_pressed && !gpio_get(GPIOA, GPIO0)) {
+  //     printf("button pressed\n");
+  //     button_is_pressed = false;
+  //   }
+  // }
 
   return 0;
 }
