@@ -49,12 +49,12 @@ set(CRITERION_FLAGS --verbose -j1)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-conversion")
 
 # For each test file
-add_executable(test_pop test_pop.c)
-target_link_libraries(test_pop
+add_executable(test_queue test_queue.c)
+target_link_libraries(test_queue
     PRIVATE queue m
     PUBLIC ${CRITERION}
 )
 add_test(
-    NAME test_pop
-    COMMAND test_pop ${CRITERION_FLAGS}
+    NAME test_queue
+    COMMAND test_queue ${CRITERION_FLAGS}
 )
