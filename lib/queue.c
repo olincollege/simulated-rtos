@@ -17,8 +17,7 @@ void enqueue(Queue* q, QueueNode* new_task) {
 
 QueueNode* pop(Queue* q) {
   if (q->length == 0) {
-    perror("queue is empty");
-    exit(1);
+    return NULL;
   }
   q->length -= 1;
   return q->front;
