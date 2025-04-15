@@ -13,6 +13,6 @@ typedef struct {
   int length;        // length of queue
 } Queue;
 
-void enqueue(Queue* q, QueueNode* new_task);
+void enqueue(Queue* queue, QueueNode* new_task);
 
-QueueNode* pop(Queue* q);
+QueueNode* pop(Queue* queue);

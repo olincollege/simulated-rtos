@@ -3,24 +3,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "task.h"
-
-void enqueue(Queue* q, QueueNode* new_task) {
-  if (q->length == 0) {
-    q->front = new_task;
-    q->last = new_task;
-    q->length = 1;
+void enqueue(Queue* queue, QueueNode* new_task) {
+  if (queue->length == 0) {
+    queue->front = new_task;
+    queue->last = new_task;
+    queue->length = 1;
     return;
   }
-  q->last->next = new_task;
-};
+  queue->last->next = new_task;
+}
 
-QueueNode* pop(Queue* q) {
-  if (q->length == 0) {
+QueueNode* pop(Queue* queue) {
+  if (queue->length == 0) {
     return NULL;
   }
-  QueueNode* pop_node = q->front;
-  q->length -= 1;
-  q->front = q->front->next;
+  QueueNode* pop_node = queue->front;
+  queue->length -= 1;
+  queue->front = queue->front->next;
   return pop_node;
-};
+}
