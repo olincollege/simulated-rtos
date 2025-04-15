@@ -4,10 +4,10 @@ OPENCM3_SETUP_FILE=$(OPENCM3_DIR)/$(OPENCM3_COMMIT)
 
 all: $(OPENCM3_SETUP_FILE)
 	@echo "Building renode example app"
-	$(MAKE) -f Makefile_renode_example.mk
+	$(MAKE) -f Makefile_sim_rtos.mk
 
 clean:
-	$(MAKE) -f Makefile_renode_example.mk clean
+	$(MAKE) -f Makefile_sim_rtos.mk clean
 
 # libopencm3 should really be included as a submodule in a real project
 # Let's do a cheap hack and clone it here instead
