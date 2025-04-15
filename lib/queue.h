@@ -10,7 +10,7 @@ typedef struct QueueNode {
 typedef struct {
   QueueNode* front;  // pointer to the first element in queue
   QueueNode* last;   // pointer to the last task in queue
-  int length;        // length of queue
+  size_t length;     // length of queue
 } Queue;
 
 void enqueue(Queue* queue, QueueNode* new_task);
