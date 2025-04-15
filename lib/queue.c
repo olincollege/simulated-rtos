@@ -4,6 +4,10 @@
 
 #include "task.h"
 
+void enqueue(Queue* q, QueueNode* new_task) {};
+
+QueueNode* pop(Queue* q) { return NULL; };
+
 // int queue_size = 0;
 // // return queue length
 // // pop the highest priority

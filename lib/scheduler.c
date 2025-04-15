@@ -16,5 +16,4 @@ void run_scheduler(Queue* queue) {
 
     enqueue(queue, node);
   }
-  return 0;
 }
