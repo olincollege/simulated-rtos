@@ -1,7 +1,7 @@
 #include <criterion/criterion.h>
 #include <criterion/new/assert.h>
 
-#include "../src/queue.h"
+#include "../lib/queue.h"
 
 // NOLINTBEGIN(*-magic-numbers)
 
