@@ -83,11 +83,11 @@ int main(void) {
   TaskControlBlock tcb_2 = {task_2, 0, 0};
   TaskControlBlock tcb_3 = {task_3, 0, 0};
 
-  QueueNode task_3 = {&tcb_3, NULL};
-  QueueNode task_2 = {&tcb_2, &task_3};
-  QueueNode task_1 = {&tcb_1, &task_2};
+  QueueNode node_3 = {&tcb_3, NULL};
+  QueueNode node_2 = {&tcb_2, &task_3};
+  QueueNode node_1 = {&tcb_1, &task_2};
 
-  Queue queue = {&task_1, &task_3, 3};
+  Queue queue = {&node_1, &node_3, 3};
 
   run_scheduler(&queue);
 
