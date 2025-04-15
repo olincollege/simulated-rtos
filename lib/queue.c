@@ -19,6 +19,8 @@ QueueNode* pop(Queue* q) {
   if (q->length == 0) {
     return NULL;
   }
+  QueueNode* pop_node = q->front;
   q->length -= 1;
-  return q->front;
+  q->front = q->front->next;
+  return pop_node;
 };
