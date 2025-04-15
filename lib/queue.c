@@ -11,6 +11,8 @@ void enqueue(Queue* queue, QueueNode* new_task) {
     return;
   }
   queue->last->next = new_task;
+  queue->last = new_task;
+  queue->length += 1;
 }
 
 QueueNode* pop(Queue* queue) {

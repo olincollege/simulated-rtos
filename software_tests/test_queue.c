@@ -7,31 +7,6 @@
 
 // NOLINTBEGIN(*-magic-numbers)
 
-/*
-Tests for enqueue
-*/
-
-// // Test that enqueue queues a node on an existing queue
-// Test(enqueue, non_integer_mean) {
-//   const int array[] = {1, 2};
-//   size_t array_len = 2;
-//   cr_assert_float_eq(mean(array, array_len), 1.5, 0.0001,
-//                      "Expected ~1.5, but got %f", mean(array, array_len));
-// }
-
-// // Test that enqueue queues a node on an empty queue
-
-// Test(pop, non_integer_mean) {
-//   const int array[] = {1, 2};
-//   size_t array_len = 2;
-//   cr_assert_float_eq(mean(array, array_len), 1.5, 0.0001,
-//                      "Expected ~1.5, but got %f", mean(array, array_len));
-// }
-
-/*
-Tests for pop
-*/
-
 // Define a task 4 (tasks 1-3 are defined in task.h)
 void task_4(void) {}
 
@@ -40,6 +15,46 @@ TaskControlBlock tcb_1 = {task_1, 0, 0};
 TaskControlBlock tcb_2 = {task_2, 0, 0};
 TaskControlBlock tcb_3 = {task_3, 0, 0};
 TaskControlBlock tcb_4 = {task_4, 0, 0};
+
+/*
+Tests for enqueue
+*/
+
+// Test that enqueue queues a node on an existing queue
+Test(enqueue, add_to_empty) {
+  QueueNode node_1 = {&tcb_1, NULL};
+  Queue queue = {NULL, NULL, 0};
+  enqueue(&queue, &node_1);
+  // check that the first task is enqueued properly
+  cr_expect(queue.front->tcb->func == task_1);
+  // check that the last task is enqueued properly
+  cr_expect(queue.last->tcb->func == task_1);
+  // check that the length is 1 after enqueue
+  cr_expect(queue.length == (size_t)1);
+}
+
+/*
+Test for enqueuing a non empty list
+*/
+// Test that enqueue queues a node on an existing queue
+Test(enqueue, add_to_normal) {
+  QueueNode node_1 = {&tcb_1, NULL};
+  QueueNode node_2 = {&tcb_2, NULL};
+
+  Queue queue = {&node_1, &node_1, 1};
+
+  enqueue(&queue, &node_2);
+  // check that the task is enqueued properly
+  cr_expect(queue.last->tcb->func == task_2);
+  // check that the first node is linked correctly to the second node
+  cr_expect(queue.front->next->tcb->func == task_2);
+  // check that the length is 2 after enqueue
+  cr_expect(queue.length == (size_t)2);
+}
+
+/*
+Tests for pop
+*/
 
 // Test that pop returns the first item in a queue and leaves other items
 Test(pop, multi_item_list) {
