@@ -1,6 +1,6 @@
 #pragma once
 
-typedef void (*TaskFunc)();
+typedef void (*TaskFunc)(void);
 // a pointer to a function that takes in nothing and returns void
 typedef struct TaskControlBlock {
   TaskFunc func;
