@@ -1,13 +1,17 @@
-#include "my_lib.h"
 #include <errno.h>
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/usart.h>
 #include <stdio.h>
+#include <time.h>  // Clock
 #include <unistd.h>
 
+#include "queue.h"
+#include "scheduler.h"
+#include "task.h"
+
 /* Forward declarations */
-int _write(int file, char *ptr, int len);
+int _write(int file, char* ptr, int len);
 
 static void clock_setup(void) {
   /* Enable GPIOD clock for LED & USARTs. */
@@ -50,7 +54,7 @@ static void button_setup(void) {
   gpio_mode_setup(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO0);
 }
 
-int _write(int file, char *ptr, int len) {
+int _write(int file, char* ptr, int len) {
   int i;
 
   if (file == STDOUT_FILENO || file == STDERR_FILENO) {
@@ -73,16 +77,30 @@ int main(void) {
   button_setup();
 
   printf("hello world! -Zbee\n");
-  bool button_is_pressed = false;
 
-  while (1) {
-    if (!button_is_pressed && gpio_get(GPIOA, GPIO0)) {
-      button_is_pressed = true;
-    } else if (button_is_pressed && !gpio_get(GPIOA, GPIO0)) {
-      printf("button pressed\n");
-      button_is_pressed = false;
-    }
-  }
+  // Initialize tasks
+  TaskControlBlock tcb_1 = {task_1, REGULAR_PRIORITY, 0};
+  TaskControlBlock tcb_2 = {task_2, REGULAR_PRIORITY, 0};
+  TaskControlBlock tcb_3 = {task_3, WARNING_PRIORITY, 0};
+
+  QueueNode node_3 = {&tcb_3, NULL};
+  QueueNode node_2 = {&tcb_2, &node_3};
+  QueueNode node_1 = {&tcb_1, &node_2};
+
+  Queue queue = {&node_1, &node_3, 3};
+
+  run_scheduler(&queue);
+
+  // bool button_is_pressed = false;
+
+  // while (1) {
+  //   if (!button_is_pressed && gpio_get(GPIOA, GPIO0)) {
+  //     button_is_pressed = true;
+  //   } else if (button_is_pressed && !gpio_get(GPIOA, GPIO0)) {
+  //     printf("button pressed\n");
+  //     button_is_pressed = false;
+  //   }
+  // }
 
   return 0;
 }

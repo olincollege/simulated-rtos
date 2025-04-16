@@ -1,3 +1,3 @@
 # C Project Repository Template
 
-A template repository for a C project.
+A template repository for a C project. :)

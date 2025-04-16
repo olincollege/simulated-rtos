@@ -1,7 +1,7 @@
 PROJECT = renode-example
 BUILD_DIR = bin
 
-CFILES = renode-example.c lib/my_lib.c
+CFILES = sim_rtos.c lib/scheduler.c lib/task.c lib/queue.c
 INCLUDES += -Ilib
 
 DEVICE=stm32f407vgt6
