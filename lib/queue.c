@@ -11,8 +11,7 @@ void enqueue(Queue* queue, QueueNode* new_task) {
     return;
   }
   if (new_task->tcb->priority == WARNING_PRIORITY) {
-    QueueNode* old_task;
-    queue->front = old_task;
+    QueueNode* old_task = queue->front;
     queue->front = new_task;        // skips the queue bc it's urgent
     queue->front->next = old_task;  // connect back to queue
     queue->length += 1;
