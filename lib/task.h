@@ -8,7 +8,8 @@ typedef struct TaskControlBlock {
   int is_active;
   // task ID
 } TaskControlBlock;
-
+const int REGULAR_PRIORITY = 3;
+const int WARNING_PRIORITY = 1;
 void task_1(void);
 void task_2(void);
 void task_3(void);

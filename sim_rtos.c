@@ -79,9 +79,9 @@ int main(void) {
   printf("hello world! -Zbee\n");
 
   // Initialize tasks
-  TaskControlBlock tcb_1 = {task_1, 0, 0};
-  TaskControlBlock tcb_2 = {task_2, 0, 0};
-  TaskControlBlock tcb_3 = {task_3, 0, 0};
+  TaskControlBlock tcb_1 = {task_1, REGULAR_PRIORITY, 0};
+  TaskControlBlock tcb_2 = {task_2, REGULAR_PRIORITY, 0};
+  TaskControlBlock tcb_3 = {task_3, WARNING_PRIORITY, 0};
 
   QueueNode node_3 = {&tcb_3, NULL};
   QueueNode node_2 = {&tcb_2, &node_3};
