@@ -84,8 +84,8 @@ int main(void) {
   TaskControlBlock tcb_3 = {task_3, 0, 0};
 
   QueueNode node_3 = {&tcb_3, NULL};
-  QueueNode node_2 = {&tcb_2, &task_3};
-  QueueNode node_1 = {&tcb_1, &task_2};
+  QueueNode node_2 = {&tcb_2, &node_3};
+  QueueNode node_1 = {&tcb_1, &node_2};
 
   Queue queue = {&node_1, &node_3, 3};
 
