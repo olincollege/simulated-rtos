@@ -137,9 +137,6 @@ static void usart_setup(void) {
 }
 
 static void gpio_setup(void) {
-  /* Setup GPIO pin GPIO12 on GPIO port D for LED. */
-  gpio_mode_setup(GPIOD, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO12);
-
   /* Setup GPIO pins for USART2 transmit. */
   gpio_mode_setup(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO2);
 
@@ -152,14 +149,6 @@ static void gpio_setup(void) {
   /* Enable led as output */
   gpio_mode_setup(LED1_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, LED1_PIN);
   gpio_set(LED1_PORT, LED1_PIN);
-}
-
-static void button_setup(void) {
-  /* Enable GPIOA clock. */
-  rcc_periph_clock_enable(RCC_GPIOA);
-
-  /* Set GPIOA0 to 'input floating'. */
-  gpio_mode_setup(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO0);
 }
 
 int _write(int file, char* ptr, int len) {
@@ -182,7 +171,6 @@ int main(void) {
   clock_setup();
   gpio_setup();
   usart_setup();
-  button_setup();
   tim_setup();
 
   printf("hello world! -Zbee\n");
@@ -198,22 +186,10 @@ int main(void) {
 
   // Queue queue = {&node_1, &node_3, 3};
 
+  // run_scheduler(queue);
+
   while (1) {
-    // printf("\n");
   }
-
-  // run_scheduler(&queue);
-
-  // bool button_is_pressed = false;
-
-  // while (1) {
-  //   if (!button_is_pressed && gpio_get(GPIOA, GPIO0)) {
-  //     button_is_pressed = true;
-  //   } else if (button_is_pressed && !gpio_get(GPIOA, GPIO0)) {
-  //     printf("button pressed\n");
-  //     button_is_pressed = false;
-  //   }
-  // }
 
   return 0;
 }
