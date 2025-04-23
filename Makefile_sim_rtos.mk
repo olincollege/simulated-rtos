@@ -1,4 +1,4 @@
-PROJECT = renode-example
+PROJECT = simulated-rtos
 BUILD_DIR = bin
 
 CFILES := sim_rtos.c $(wildcard lib/*.c)#changed
