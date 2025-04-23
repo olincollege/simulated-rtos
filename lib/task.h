@@ -12,5 +12,5 @@ typedef struct TaskControlBlock {
   // task ID
 } TaskControlBlock;
 void long_task(TaskControlBlock* long_task_tcb);
-void task_2(void);
+void short_task(void);
 void task_3(void);
