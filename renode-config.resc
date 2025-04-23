@@ -2,7 +2,7 @@
 :description: This script runs the usart_printf example on stm32f4 discovery
 
 $name?="STM32F4_Discovery"
-$bin?=@renode-example.elf
+$bin?=@simulated-rtos.elf
 
 # Create Machine & Load config
 mach create $name
