@@ -8,7 +8,7 @@ typedef struct TaskControlBlock {
   TaskFunc func;
   TaskPriority priority;
   int is_active;
-  int* paused_num;
+  int curr_num;
   // task ID
 } TaskControlBlock;
 void task_1(void);
