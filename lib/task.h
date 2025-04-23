@@ -11,6 +11,6 @@ typedef struct TaskControlBlock {
   int curr_num;
   // task ID
 } TaskControlBlock;
-void task_1(void);
+void long_task(TaskControlBlock* long_task_tcb);
 void task_2(void);
 void task_3(void);

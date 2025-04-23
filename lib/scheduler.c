@@ -9,11 +9,11 @@ void run_scheduler(Queue* queue) {
   while (1) {
     // pop task node from queue
     QueueNode* node = pop(queue);
+    // if node is long task, then switch to active
     TaskControlBlock* tcb = node->tcb;
 
     // run task
     tcb->func();
-
     enqueue(queue, node);
   }
 }
