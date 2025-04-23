@@ -108,9 +108,6 @@ void tim2_isr(void) {
   }
 }
 
-/* Forward declarations */
-int _write(int file, char* ptr, int len);
-
 static void clock_setup(void) {
   /* Enable GPIOD clock for LED & USARTs. */
   rcc_periph_clock_enable(RCC_GPIOD);
@@ -149,22 +146,6 @@ static void gpio_setup(void) {
   /* Enable led as output */
   gpio_mode_setup(LED1_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, LED1_PIN);
   gpio_set(LED1_PORT, LED1_PIN);
-}
-
-int _write(int file, char* ptr, int len) {
-  int i;
-
-  if (file == STDOUT_FILENO || file == STDERR_FILENO) {
-    for (i = 0; i < len; i++) {
-      if (ptr[i] == '\n') {
-        usart_send_blocking(USART2, '\r');
-      }
-      usart_send_blocking(USART2, ptr[i]);
-    }
-    return i;
-  }
-  errno = EIO;
-  return -1;
 }
 
 int main(void) {
