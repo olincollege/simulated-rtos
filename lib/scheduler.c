@@ -20,7 +20,7 @@ void run_scheduler(Queue* queue) {
     // if node is long task, then switch to active??
 
     // run task
-    node->tcb->func();
+    node->tcb->func(node->tcb);
 
     enqueue(queue, node);
   }

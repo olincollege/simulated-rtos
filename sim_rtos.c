@@ -128,20 +128,17 @@ int main(void) {
   printf("hello world! -Zbee\n");
 
   // Initialize tasks
-  // TaskControlBlock tcb_1 = {task_1, REGULAR_PRIORITY, 0};
-  // TaskControlBlock tcb_2 = {task_2, REGULAR_PRIORITY, 0};
+  TaskControlBlock tcb_1 = {long_task, REGULAR_PRIORITY, 0, 0};
+  TaskControlBlock tcb_2 = {short_task, REGULAR_PRIORITY, 0, 0};
   // TaskControlBlock tcb_3 = {task_3, WARNING_PRIORITY, 0};
 
   // QueueNode node_3 = {&tcb_3, NULL};
-  // QueueNode node_2 = {&tcb_2, &node_3};
-  // QueueNode node_1 = {&tcb_1, &node_2};
+  QueueNode node_2 = {&tcb_2, NULL};
+  QueueNode node_1 = {&tcb_1, &node_2};
 
-  // Queue queue = {&node_1, &node_3, 3};
+  Queue queue = {&node_1, &node_2, 3};
 
-  // run_scheduler(queue);
-
-  while (1) {
-  }
-
+  // Scheduler runs forever
+  run_scheduler(&queue);
   return 0;
 }
