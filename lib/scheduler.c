@@ -1,5 +1,7 @@
 #include "scheduler.h"
 
+#include <libopencm3/stm32/timer.h>
+
 #include "queue.h"
 #include "task.h"
 
@@ -15,11 +17,11 @@ void run_scheduler(Queue* queue) {
 
     // pop task node from queue
     QueueNode* node = pop(queue);
-    // if node is long task, then switch to active
-    TaskControlBlock* tcb = node->tcb;
+    // if node is long task, then switch to active??
 
     // run task
-    tcb->func();
+    node->tcb->func();
+
     enqueue(queue, node);
   }
 }

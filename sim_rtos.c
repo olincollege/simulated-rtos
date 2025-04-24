@@ -34,8 +34,6 @@ uint16_t frequency_sequence[] = {
 int frequency_sel = 0;
 
 static void tim_setup(void) {
-  printf("Start TIM setup\n");
-
   /* Enable TIM2 clock. */
   rcc_periph_clock_enable(RCC_TIM2);
 
@@ -70,42 +68,15 @@ static void tim_setup(void) {
   /* count full range, as we'll update compare value continuously */
   timer_set_period(TIM2, 65535);
 
+  // Schedule the timer interrupt
   /* Set the initual output compare value for OC1. */
-  timer_set_oc_value(TIM2, TIM_OC1, frequency_sequence[frequency_sel++]);
+  // timer_set_oc_value(TIM2, TIM_OC1, frequency_sequence[frequency_sel++]);
 
   /* Counter enable. */
-  timer_enable_counter(TIM2);
+  // timer_enable_counter(TIM2);
 
   /* Enable Channel 1 compare interrupt to recalculate compare values */
-  timer_enable_irq(TIM2, TIM_DIER_CC1IE);
-
-  printf("TIM is set up.\n");
-}
-
-void tim2_isr(void) {
-  if (timer_get_flag(TIM2, TIM_SR_CC1IF)) {
-    /* Clear compare interrupt flag. */
-    timer_clear_flag(TIM2, TIM_SR_CC1IF);
-
-    /*
-     * Get current timer value to calculate next
-     * compare register value.
-     */
-    uint16_t compare_time = timer_get_counter(TIM2);
-
-    /* Calculate and set the next compare value. */
-    uint16_t frequency = frequency_sequence[frequency_sel++];
-    uint16_t new_time = compare_time + frequency;
-
-    timer_set_oc_value(TIM2, TIM_OC1, new_time);
-    if (frequency_sel == ARRAY_LEN(frequency_sequence)) {
-      frequency_sel = 0;
-    }
-
-    printf("LED toggled!\n");
-    /* Toggle LED to indicate compare event. */
-    gpio_toggle(LED1_PORT, LED1_PIN);
-  }
+  // timer_enable_irq(TIM2, TIM_DIER_CC1IE);
 }
 
 static void clock_setup(void) {
