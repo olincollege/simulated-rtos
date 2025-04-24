@@ -2,8 +2,11 @@
 
 #include <libopencm3/stm32/timer.h>
 
+#include "interrupts.h"  //preempt_requested
 #include "queue.h"
 #include "task.h"
+
+const int TWO_MILLISECONDS = 10;
 
 void run_scheduler(Queue* queue) {
   while (1) {

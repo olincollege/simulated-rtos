@@ -17,7 +17,8 @@ void long_task(TaskControlBlock* long_task_tcb) {
 
   while (1) {
     // Cooperatively yield if the timer interrupt has gone off
-    if (preempt_requested == 1) {
+    if (preempt_requested == true) {
+      preempt_requested = false;
       return;
     }
 

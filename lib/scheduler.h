@@ -6,7 +6,7 @@
 #include "queue.h"  // Queue
 
 // With the timer running at 5kHz, this many ticks equals a 2 ms delay
-const int TWO_MILLISECONDS = 10;
+extern const int TWO_MILLISECONDS;
 
 /*
 Run the scheduler function. Runs indefinitely.

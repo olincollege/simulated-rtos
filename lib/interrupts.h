@@ -5,6 +5,6 @@
 
 #include "queue.h"
 
-volatile bool preempt_requested = false;
+extern volatile bool preempt_requested;
 
 void tim2_isr(void);

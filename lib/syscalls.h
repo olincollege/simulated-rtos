@@ -2,6 +2,7 @@
 Syscall function library. Most functions here are not needed for the project and
 are implemented as dummy functions to supress compiler warnings.
 */
+#pragma once
 
 /**
  * @brief  Syscall write function to redirect stdout/stderr to USART2.
