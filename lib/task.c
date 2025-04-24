@@ -44,6 +44,7 @@ void long_task(TaskControlBlock* long_task_tcb) {
 
 void short_task(TaskControlBlock* tcb) {
   printf("Short task started\n");
+  timer_disable_irq(TIM2, TIM_DIER_CC1IE);
   printf("Short task completed\n");
 }
 
