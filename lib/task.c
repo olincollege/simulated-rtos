@@ -22,7 +22,7 @@ void long_task(TaskControlBlock* long_task_tcb) {
       return;
     }
 
-    if (long_task_tcb->curr_num == 1000000) {
+    if (long_task_tcb->curr_num == 10000) {
       // Disable the timer interrupt during task cleanup. No need to turn back
       // on because task is finished
       timer_disable_irq(TIM2, TIM_DIER_CC1IE);
