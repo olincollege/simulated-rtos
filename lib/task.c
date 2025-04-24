@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 
+#include "interrupts.h"
+
 /*
 simulate tasks here
 */
@@ -13,6 +15,11 @@ void long_task(TaskControlBlock* long_task_tcb) {
   }
 
   while (long_task_tcb->curr_num < 1000000) {
+    // Cooperatively yield if the timer interrupt has gone off
+    if (preempt_requested == 1) {
+      return;
+    }
+
     if (long_task_tcb->curr_num % 1000000 == 0) {
       // Disable the timer interrupt during task cleanup. No need to turn back
       // on because task is finished

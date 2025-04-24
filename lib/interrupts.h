@@ -1,5 +1,10 @@
-//saves the curr state of the task, queue the task to the end of the queue, run scheduler
+// saves the curr state of the task, queue the task to the end of the queue, run
+// scheduler
 #pragma once
+#include <stdbool.h>  //bool
+
 #include "queue.h"
 
-void interrupt(TaskControlBlock* interrupted_task, Queue* queue);
+volatile bool preempt_requested = false;
+
+void tim2_isr(void);
