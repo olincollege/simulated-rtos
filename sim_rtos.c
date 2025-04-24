@@ -130,5 +130,6 @@ int main(void) {
 
   // Scheduler runs forever
   run_scheduler(&queue);
+
   return 0;
 }

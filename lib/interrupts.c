@@ -14,6 +14,8 @@ void tim2_isr(void) {
     /* Clear compare interrupt flag. */
     timer_clear_flag(TIM2, TIM_SR_CC1IF);
 
+    printf("Interrupt handler running\n");
+
     preempt_requested = true;
   }
 }
