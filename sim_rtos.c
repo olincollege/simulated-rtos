@@ -67,16 +67,6 @@ static void tim_setup(void) {
 
   /* count full range, as we'll update compare value continuously */
   timer_set_period(TIM2, 65535);
-
-  // Schedule the timer interrupt
-  /* Set the initual output compare value for OC1. */
-  // timer_set_oc_value(TIM2, TIM_OC1, frequency_sequence[frequency_sel++]);
-
-  /* Counter enable. */
-  // timer_enable_counter(TIM2);
-
-  /* Enable Channel 1 compare interrupt to recalculate compare values */
-  // timer_enable_irq(TIM2, TIM_DIER_CC1IE);
 }
 
 static void clock_setup(void) {
