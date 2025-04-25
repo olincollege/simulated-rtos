@@ -17,5 +17,7 @@ void tim2_isr(void) {
     printf("Interrupt handler running\n");
 
     preempt_requested = true;
+
+    printf("Preempt requested: %d\n", preempt_requested);
   }
 }

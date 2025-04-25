@@ -17,7 +17,7 @@ void long_task(TaskControlBlock* long_task_tcb) {
 
   while (1) {
     // Cooperatively yield if the timer interrupt has gone off
-    printf("preempt_requested: %d\n", preempt_requested);
+    // printf("preempt_requested: %d\n", preempt_requested);
     if (preempt_requested == true) {
       preempt_requested = false;
       return;
@@ -26,7 +26,7 @@ void long_task(TaskControlBlock* long_task_tcb) {
     if (long_task_tcb->curr_num == 10000) {
       // Disable the timer interrupt during task cleanup. No need to turn back
       // on because task is finished
-      timer_disable_irq(TIM2, TIM_DIER_CC1IE);
+      // timer_disable_irq(TIM2, TIM_DIER_CC1IE);
       long_task_tcb->is_active = 0;
       long_task_tcb->curr_num = 0;
       printf("Long task finished.\n");
@@ -35,16 +35,16 @@ void long_task(TaskControlBlock* long_task_tcb) {
 
     // Temporarily disable the timer interrupt so curr_num doesn't increment
     // without printing the task's progress
-    timer_disable_irq(TIM2, TIM_DIER_CC1IE);
+    // timer_disable_irq(TIM2, TIM_DIER_CC1IE);
     long_task_tcb->curr_num++;
     printf("Long task progress: %d\n", long_task_tcb->curr_num);
-    timer_enable_irq(TIM2, TIM_DIER_CC1IE);
+    // timer_enable_irq(TIM2, TIM_DIER_CC1IE);
   }
 }
 
 void short_task(TaskControlBlock* tcb) {
   printf("Short task started\n");
-  timer_disable_irq(TIM2, TIM_DIER_CC1IE);
+  // timer_disable_irq(TIM2, TIM_DIER_CC1IE);
   printf("Short task completed\n");
 }
 

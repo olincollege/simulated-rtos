@@ -67,6 +67,9 @@ static void tim_setup(void) {
 
   /* count full range, as we'll update compare value continuously */
   timer_set_period(TIM2, 65535);
+
+  /* Counter enable. (start timer)*/
+  timer_enable_counter(TIM2);
 }
 
 static void clock_setup(void) {
@@ -130,6 +133,9 @@ int main(void) {
 
   // Scheduler runs forever
   run_scheduler(&queue);
+
+  while (1) {
+  }
 
   return 0;
 }

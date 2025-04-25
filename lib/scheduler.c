@@ -11,10 +11,12 @@ const int TWO_MILLISECONDS = 10;
 void run_scheduler(Queue* queue) {
   while (1) {
     // Schedule an interrupt after 2 ms of running the task
-    /* Set the initual output compare value for OC1. */
-    timer_set_oc_value(TIM2, TIM_OC1, TWO_MILLISECONDS);
-    /* Counter enable. */
-    timer_enable_counter(TIM2);
+    /* Get current timer value to calculate next compare register value.*/
+    uint16_t compare_time = timer_get_counter(TIM2);
+    /* Calculate and set the next compare value. */
+    uint16_t new_time = compare_time + 100;
+    /* Set the output compare value for OC1. */
+    timer_set_oc_value(TIM2, TIM_OC1, new_time);
     /* Enable Channel 1 compare interrupt.*/
     timer_enable_irq(TIM2, TIM_DIER_CC1IE);
 
