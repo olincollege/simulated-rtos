@@ -14,7 +14,9 @@ void run_scheduler(Queue* queue) {
     /* Get current timer value to calculate next compare register value.*/
     uint16_t compare_time = timer_get_counter(TIM2);
     /* Calculate and set the next compare value. */
-    uint16_t new_time = compare_time + 100;
+    uint16_t new_time = compare_time + TWO_MILLISECONDS;
+    printf("Scheduling next compare: CNT=%d → OC1=%d\n", compare_time,
+           new_time);
     /* Set the output compare value for OC1. */
     timer_set_oc_value(TIM2, TIM_OC1, new_time);
     /* Enable Channel 1 compare interrupt.*/
