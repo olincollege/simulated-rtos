@@ -18,7 +18,7 @@ void tim2_isr(void) {
     /* Clear compare interrupt flag. */
     timer_clear_flag(TIM2, TIM_SR_CC1IF);
 
-    printf("Interrupt handler running\n");
+    printf("Tim2 running\n");
 
     preempt_requested = true;
 
@@ -32,15 +32,17 @@ void tim3_isr(void) {
     /* Clear flag. */
     timer_clear_flag(TIM3, TIM_SR_UIF);
 
-    printf("Interrupt handler running\n");
+    printf("Tim3 running\n");
     /* enqueue the short task*/
     // if no available nodes, meaning that all the prelocated nodes are already
     // in queue, dont queue, else loop through all nodes to find available
     // nodes, change to occupied, and queue that node
     for (int i = 0; i < MAX_SHORT_TASK; i++) {
+      printf("is available: %d\n", short_task_tcbs[i].is_available);
       if (short_task_tcbs[i].is_available == 1) {
         short_task_tcbs[i].is_available = 0;
         enqueue(global_queue, &short_task_nodes[i]);
+        printf("SHORT TASK QUEUED\n");
         break;
       }
     }

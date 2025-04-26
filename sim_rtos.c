@@ -80,7 +80,7 @@ static void tim2_setup(void) {
   timer_enable_counter(TIM2);
 }
 static void tim3_setup(void) {
-  const int SHORT_TASK_PERIOD = 200;
+  const int SHORT_TASK_PERIOD = 3;
   /* Enable TIM3 clock. */
   rcc_periph_clock_enable(RCC_TIM3);
 
