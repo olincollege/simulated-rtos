@@ -1,6 +1,7 @@
 #include "scheduler.h"
 
 #include <libopencm3/stm32/timer.h>
+#include <stdio.h>
 
 #include "interrupts.h"  //preempt_requested
 #include "queue.h"
@@ -24,6 +25,11 @@ void run_scheduler(Queue* queue) {
 
     // pop task node from queue
     QueueNode* node = pop(queue);
+    if (node->tcb->func == short_task) {
+      printf("RESET AVAILABILITY\n");
+      node->tcb->is_available = 1;
+    }
+
     // if node is long task, then switch to active??
 
     // run task

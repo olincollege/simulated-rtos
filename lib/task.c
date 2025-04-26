@@ -23,7 +23,9 @@ void long_task(TaskControlBlock* long_task_tcb) {
     }
 
     if (long_task_tcb->curr_num == 1000) {
-      long_task_tcb->is_active = 0;
+
+      long_task_tcb->is_available = 0;
+
       long_task_tcb->curr_num = 0;
       printf("Long task finished. Time: %lu\n", timer_get_counter(TIM2));
       return;
