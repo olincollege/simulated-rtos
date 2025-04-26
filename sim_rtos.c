@@ -10,36 +10,15 @@
 #include "queue.h"
 #include "scheduler.h"
 #include "task.h"
-// #pragma once
 
-#ifndef ARRAY_LEN
-#define ARRAY_LEN(array) (sizeof((array)) / sizeof((array)[0]))
-#endif
-
-#define LED1_PORT GPIOD
-#define LED1_PIN GPIO12
-
-/* Morse standard timings */
-#define ELEMENT_TIME 500
-#define DIT (1 * ELEMENT_TIME)
-#define DAH (3 * ELEMENT_TIME)
-#define INTRA (1 * ELEMENT_TIME)
-#define INTER (3 * ELEMENT_TIME)
-#define WORD (7 * ELEMENT_TIME)
 /*
-can tweak teh frquency of how often the short task is enqueued
+Create global task queue and task tcbs.
+Can tweak the frquency of how often the short task is enqueued
 */
 Queue* global_queue = NULL;  // create glabal queue so any .c file can access it
 TaskControlBlock short_task_tcbs[MAX_SHORT_TASK];  // initialize them so the
                                                    // interrupt can access
 QueueNode short_task_nodes[MAX_SHORT_TASK];
-
-uint16_t frequency_sequence[] = {
-    DIT,   INTRA, DIT,   INTRA, DIT,   INTER, DAH,   INTRA, DAH,
-    INTRA, DAH,   INTER, DIT,   INTRA, DIT,   INTRA, DIT,   WORD,
-};
-
-int frequency_sel = 0;
 
 static void tim2_setup(void) {
   /* Enable TIM2 clock. */
@@ -79,6 +58,7 @@ static void tim2_setup(void) {
   /* Counter enable. (start timer)*/
   timer_enable_counter(TIM2);
 }
+
 static void tim3_setup(void) {
   const int SHORT_TASK_PERIOD = 3;
   /* Enable TIM3 clock. */
@@ -138,13 +118,6 @@ static void gpio_setup(void) {
 
   /* Setup USART2 TX pin as alternate function. */
   gpio_set_af(GPIOA, GPIO_AF7, GPIO2);
-
-  // Timer tutorial GPIO setup
-  /* Enable GPIO clock for leds. */
-  rcc_periph_clock_enable(RCC_GPIOD);
-  /* Enable led as output */
-  gpio_mode_setup(LED1_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, LED1_PIN);
-  gpio_set(LED1_PORT, LED1_PIN);
 }
 
 int main(void) {
