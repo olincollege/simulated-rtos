@@ -10,6 +10,7 @@
 #include "queue.h"
 #include "scheduler.h"
 #include "task.h"
+// #pragma once
 
 #ifndef ARRAY_LEN
 #define ARRAY_LEN(array) (sizeof((array)) / sizeof((array)[0]))
@@ -25,6 +26,13 @@
 #define INTRA (1 * ELEMENT_TIME)
 #define INTER (3 * ELEMENT_TIME)
 #define WORD (7 * ELEMENT_TIME)
+/*
+can tweak teh frquency of how often the short task is enqueued
+*/
+Queue* global_queue = NULL;  // create glabal queue so any .c file can access it
+TaskControlBlock short_task_tcbs[MAX_SHORT_TASK];  // initialize them so the
+                                                   // interrupt can access
+QueueNode short_task_nodes[MAX_SHORT_TASK];
 
 uint16_t frequency_sequence[] = {
     DIT,   INTRA, DIT,   INTRA, DIT,   INTER, DAH,   INTRA, DAH,
@@ -33,7 +41,7 @@ uint16_t frequency_sequence[] = {
 
 int frequency_sel = 0;
 
-static void tim_setup(void) {
+static void tim2_setup(void) {
   /* Enable TIM2 clock. */
   rcc_periph_clock_enable(RCC_TIM2);
 
@@ -70,6 +78,33 @@ static void tim_setup(void) {
 
   /* Counter enable. (start timer)*/
   timer_enable_counter(TIM2);
+}
+static void tim3_setup(void) {
+  const int SHORT_TASK_PERIOD = 200;
+  /* Enable TIM3 clock. */
+  rcc_periph_clock_enable(RCC_TIM3);
+
+  /* Enable TIM3 interrupt. */
+  nvic_enable_irq(NVIC_TIM3_IRQ);
+
+  /* Reset TIM3 peripheral to defaults. */
+  rcc_periph_reset_pulse(RST_TIM3);
+
+  /* Set timer mode */
+  timer_set_mode(TIM3, TIM_CR1_CKD_CK_INT, TIM_CR1_CMS_EDGE, TIM_CR1_DIR_UP);
+
+  /* Set prescaler to slow down the clock */
+  timer_set_prescaler(TIM3, ((rcc_apb1_frequency * 2) / 5000));
+  /* Timer now ticks at 10kHz = 0.1ms per tick */
+
+  /* Set period to 500 ticks => 50ms */
+  timer_set_period(TIM3, SHORT_TASK_PERIOD);  // 100 ticks * 0.1ms = 50ms
+
+  /* Enable Update Event Interrupt */
+  timer_enable_irq(TIM3, TIM_DIER_UIE);
+
+  /* Start the counter */
+  timer_enable_counter(TIM3);
 }
 
 static void clock_setup(void) {
@@ -116,20 +151,32 @@ int main(void) {
   clock_setup();
   gpio_setup();
   usart_setup();
-  tim_setup();
+  tim2_setup();
+  tim3_setup();
 
   printf("hello world! -Zbee\n");
 
-  // Initialize tasks
-  TaskControlBlock tcb_1 = {long_task, REGULAR_PRIORITY, 0, 0};
-  TaskControlBlock tcb_2 = {short_task, REGULAR_PRIORITY, 0, 0};
+  // Initialize long task
+  TaskControlBlock tcb_long = {long_task, REGULAR_PRIORITY, 0, 0, NULL};
+  // initialize short tasks
+  for (int i = 0; i < MAX_SHORT_TASK; i++) {
+    short_task_tcbs[i].func = short_task;
+    short_task_tcbs[i].priority = REGULAR_PRIORITY;
+    short_task_tcbs[i].is_available = 1;  // free
+  }
+
   // TaskControlBlock tcb_3 = {task_3, WARNING_PRIORITY, 0};
 
   // QueueNode node_3 = {&tcb_3, NULL};
-  QueueNode node_2 = {&tcb_2, NULL};
-  QueueNode node_1 = {&tcb_1, &node_2};
+  QueueNode node_long = {&tcb_long, NULL};
+  for (int i = 0; i < MAX_SHORT_TASK; i++) {
+    short_task_nodes[i].tcb = &short_task_tcbs[i];
+    short_task_nodes[i].next = NULL;
+    short_task_tcbs[i].my_node = &short_task_nodes[i];
+  }
 
-  Queue queue = {&node_1, &node_2, 3};
+  Queue queue = {&node_long, &node_long, 1};
+  global_queue = &queue;
 
   // Scheduler runs forever
   run_scheduler(&queue);

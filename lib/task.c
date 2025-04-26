@@ -27,7 +27,7 @@ void long_task(TaskControlBlock* long_task_tcb) {
       // Disable the timer interrupt during task cleanup. No need to turn back
       // on because task is finished
       // timer_disable_irq(TIM2, TIM_DIER_CC1IE);
-      long_task_tcb->is_active = 0;
+      long_task_tcb->is_available = 0;
       long_task_tcb->curr_num = 0;
       printf("Long task finished.\n");
       return;
