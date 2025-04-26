@@ -20,6 +20,9 @@ TaskControlBlock short_task_tcbs[MAX_SHORT_TASK];  // initialize them so the
                                                    // interrupt can access
 QueueNode short_task_nodes[MAX_SHORT_TASK];
 
+/* Define the short task period*/
+const int SHORT_TASK_PERIOD = 3;
+
 static void tim2_setup(void) {
   /* Enable TIM2 clock. */
   rcc_periph_clock_enable(RCC_TIM2);
@@ -60,7 +63,6 @@ static void tim2_setup(void) {
 }
 
 static void tim3_setup(void) {
-  const int SHORT_TASK_PERIOD = 3;
   /* Enable TIM3 clock. */
   rcc_periph_clock_enable(RCC_TIM3);
 
