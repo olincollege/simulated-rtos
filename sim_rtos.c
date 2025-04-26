@@ -73,12 +73,11 @@ static void tim3_setup(void) {
   /* Set timer mode */
   timer_set_mode(TIM3, TIM_CR1_CKD_CK_INT, TIM_CR1_CMS_EDGE, TIM_CR1_DIR_UP);
 
-  /* Set prescaler to slow down the clock */
+  /* Set prescaler to 5 mHz */
   timer_set_prescaler(TIM3, ((rcc_apb1_frequency * 2) / 5000));
-  /* Timer now ticks at 10kHz = 0.1ms per tick */
 
-  /* Set period to 500 ticks => 50ms */
-  timer_set_period(TIM3, SHORT_TASK_PERIOD);  // 100 ticks * 0.1ms = 50ms
+  /* Set period to SHORT_TASK_PERIOD=3 ticks => 0.3ms */
+  timer_set_period(TIM3, SHORT_TASK_PERIOD);  // 3 ticks * 0.1ms = 0.3ms
 
   /* Enable Update Event Interrupt */
   timer_enable_irq(TIM3, TIM_DIER_UIE);
@@ -131,16 +130,13 @@ int main(void) {
 
   // Initialize long task
   TaskControlBlock tcb_long = {long_task, REGULAR_PRIORITY, 0, 0, NULL};
-  // initialize short tasks
+  // Initialize short tasks
   for (int i = 0; i < MAX_SHORT_TASK; i++) {
     short_task_tcbs[i].func = short_task;
     short_task_tcbs[i].priority = REGULAR_PRIORITY;
     short_task_tcbs[i].is_available = 1;  // free
   }
 
-  // TaskControlBlock tcb_3 = {task_3, WARNING_PRIORITY, 0};
-
-  // QueueNode node_3 = {&tcb_3, NULL};
   QueueNode node_long = {&tcb_long, NULL};
   for (int i = 0; i < MAX_SHORT_TASK; i++) {
     short_task_nodes[i].tcb = &short_task_tcbs[i];
@@ -153,9 +149,6 @@ int main(void) {
 
   // Scheduler runs forever
   run_scheduler(&queue);
-
-  while (1) {
-  }
 
   return 0;
 }
