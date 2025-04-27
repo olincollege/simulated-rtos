@@ -25,16 +25,12 @@ void run_scheduler(Queue* queue) {
 
     // pop task node from queue
     QueueNode* node = pop(queue);
-    if (node->tcb->func == short_task) {
-      printf("RESET AVAILABILITY\n");
-      node->tcb->is_available = 1;
-    }
-
-    // if node is long task, then switch to active??
 
     // run task
     node->tcb->func(node->tcb);
 
-    enqueue(queue, node);
+    if (node->tcb->func == long_task) {
+      enqueue(queue, node);
+    }
   }
 }

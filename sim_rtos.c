@@ -136,7 +136,7 @@ int main(void) {
   for (int i = 0; i < MAX_SHORT_TASK; i++) {
     short_task_tcbs[i].func = short_task;
     short_task_tcbs[i].priority = REGULAR_PRIORITY;
-    short_task_tcbs[i].is_available = 1;  // free
+    short_task_tcbs[i].is_available = 1;  // available
   }
 
   QueueNode node_long = {&tcb_long, NULL};
