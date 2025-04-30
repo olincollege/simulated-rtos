@@ -6,7 +6,7 @@
 struct TaskControlBlock;
 
 // Set the maximum number of short tasks, whose nodes will be preallocated
-const size_t MAX_SHORT_TASK = 15;
+enum { MAX_SHORT_TASK = 15 };
 
 // a pointer to a function that takes in nothing and returns void
 typedef void (*TaskFunc)(struct TaskControlBlock*);
