@@ -5,9 +5,6 @@
 
 #include "interrupts.h"
 
-/*
-simulate tasks here
-*/
 void long_task(TaskControlBlock* long_task_tcb) {
   if (long_task_tcb->curr_num == 0) {
     printf("Long task started. Time: %lu\n", timer_get_counter(TIM2));

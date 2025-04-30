@@ -17,7 +17,7 @@ typedef struct {
 
 // TODO remove stuff about warning priority if not using
 /**
- * Enqueue a new task onto the queue.
+ * @brief Enqueue a new task onto the queue.
  *
  * This function inserts a new task at the appropriate position in the queue
  * based on its priority. If the queue is empty, the new task becomes both the
@@ -33,7 +33,7 @@ typedef struct {
 void enqueue(Queue* queue, QueueNode* new_task);
 
 /**
- * Remove and return the front task from the queue.
+ * @brief Remove and return the front task from the queue.
  *
  * This function removes the task at the front of the queue and returns a
  * pointer to it. If the queue is empty, it returns NULL. After the task is
