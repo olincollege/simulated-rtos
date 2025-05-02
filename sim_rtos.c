@@ -29,12 +29,19 @@ int main(void) {
   printf("Hello World!\n");
 
   // Initialize a long task tcb
-  TaskControlBlock tcb_long = {long_task, REGULAR_PRIORITY, 0, 0, NULL};
+  TaskControlBlock tcb_long = {long_task, REGULAR_PRIORITY, 0, 0, NULL, NULL};
+
+  // Initialize dependent task tcbs
+  TaskControlBlock tcb_dependent = {
+      dependent_task, REGULAR_PRIORITY, 0, 0, NULL, NULL};
+
   // Initialize short task tcbs
   for (size_t i = 0; i < MAX_SHORT_TASK; i++) {
     short_task_tcbs[i].func = short_task;
     short_task_tcbs[i].priority = REGULAR_PRIORITY;
     short_task_tcbs[i].is_available = 1;  // available
+    short_task_tcbs[i].next_task =
+        &tcb_dependent;  // set dependent task to be dependent to short task
   }
 
   // Initialize long task queue node
