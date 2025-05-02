@@ -3,7 +3,7 @@ OPENCM3_COMMIT=89074d6a13ed7febba04d3c421ce7bf2b7972156
 OPENCM3_SETUP_FILE=$(OPENCM3_DIR)/$(OPENCM3_COMMIT)
 
 all: $(OPENCM3_SETUP_FILE)
-	@echo "Building renode example app"
+	@echo "Building simulated RTOS app"
 	$(MAKE) -f Makefile_sim_rtos.mk
 
 clean:

@@ -8,7 +8,7 @@ OBJS := $(CFILES:.c=.o)#added
 DEPS := $(OBJS:.o=.d)#added
 
 
-CFLAGS += -Wall -Wextra -Os -Ilib -MD -MP#added
+CFLAGS += -Wall -Wextra -pedantic -Os -Ilib -MD -MP#added
 
 DEVICE=stm32f407vgt6
 OOCD_FILE = board/stm32f4discovery.cfg
