@@ -28,6 +28,11 @@ void run_scheduler(Queue* queue) {
 
     // run task
     node->tcb->func(node->tcb);
+    // if the task has another task dependent on it
+    if (node->tcb->next_task) {
+      // runs the next task immediately
+      node->tcb->next_task->func(node->tcb->next_task);
+    }
 
     if (node->tcb->func == long_task) {
       enqueue(queue, node);

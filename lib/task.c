@@ -60,3 +60,31 @@ void short_task(TaskControlBlock* tcb) {
     printf("Short task progress: %d\n", tcb->curr_num);
   }
 }
+
+void dependent_task(TaskControlBlock* tcb) {
+  if (tcb->curr_num == 0) {
+    printf("Dependent task started. Time: %lu\n", timer_get_counter(TIM2));
+  } else {
+    printf("Dependent task resumed. Time: %lu\n", timer_get_counter(TIM2));
+  }
+
+  while (1) {
+    // Cooperatively yield if the timer interrupt has gone off
+    if (preempt_requested == true) {
+      printf("Dependent task paused. Time: %lu", timer_get_counter(TIM2));
+      preempt_requested = false;
+      return;
+    }
+
+    if (tcb->curr_num == 100) {
+      // Task finished
+      tcb->is_available = 1;
+      tcb->curr_num = 0;
+      printf("Dependent task finished. Time: %lu\n", timer_get_counter(TIM2));
+      return;
+    }
+
+    tcb->curr_num++;
+    printf("Dependent task progress: %d\n", tcb->curr_num);
+  }
+}

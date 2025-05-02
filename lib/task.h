@@ -19,6 +19,7 @@ typedef struct TaskControlBlock {
   int is_available;
   int curr_num;
   struct QueueNode* my_node;
+  struct TaskControlBlock* next_task;
   // task ID
 } TaskControlBlock;
 
@@ -43,3 +44,10 @@ void long_task(TaskControlBlock* long_task_tcb);
  * resets curr_num, marks its task tcb as available, and returns.
  */
 void short_task(TaskControlBlock* short_task_tcb);
+
+/**
+ * @brief Simulate a task that gets executed right after short task gets
+ * executed.
+ *
+ */
+void dependent_task(TaskControlBlock* dependent_task_tcb);
