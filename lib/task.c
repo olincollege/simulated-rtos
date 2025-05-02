@@ -15,7 +15,7 @@ void long_task(TaskControlBlock* long_task_tcb) {
   while (1) {
     // Cooperatively yield if the timer interrupt has gone off
     if (preempt_requested == true) {
-      printf("Long task paused. Time: %lu", timer_get_counter(TIM2));
+      printf("Long task paused. Time: %lu\n", timer_get_counter(TIM2));
       preempt_requested = false;
       return;
     }
@@ -43,7 +43,7 @@ void short_task(TaskControlBlock* tcb) {
   while (1) {
     // Cooperatively yield if the timer interrupt has gone off
     if (preempt_requested == true) {
-      printf("Short task paused. Time: %lu", timer_get_counter(TIM2));
+      printf("Short task paused. Time: %lu\n", timer_get_counter(TIM2));
       preempt_requested = false;
       return;
     }
@@ -71,7 +71,7 @@ void dependent_task(TaskControlBlock* tcb) {
   while (1) {
     // Cooperatively yield if the timer interrupt has gone off
     if (preempt_requested == true) {
-      printf("Dependent task paused. Time: %lu", timer_get_counter(TIM2));
+      printf("Dependent task paused. Time: %lu\n", timer_get_counter(TIM2));
       preempt_requested = false;
       return;
     }
