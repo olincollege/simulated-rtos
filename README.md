@@ -45,18 +45,28 @@ make
 ```
 This will generate an ELF binary file that can be loaded into Renode.
 
-### 3. Install and Run Renode
+### 3. Run Renode
 
-Install renode by following the instructions in the README here: https://github.com/renode/renode/#installation
-We wrote a bash script start file to start the renode file.
-Open renode by running “./start.sh”.
-This will open two windows—one for the main Renode console and another for UART output.
-In the external window labeled Renode, enter “start”. This should produce output on the other screen
+To run our script in Renode, run the shell script start.sh. The script assumes your download of Renode is stored in the same folder as the cloned repo; you may have to update the path in this script if your download of Renode is stored somewhere else.
+
+```
+./start.sh
+```
+
+Running start.sh will open two Renode terminals (one of them takes a couple seconds to appear). To run our RTOS, type start in the first window that pops up. It should print out a whole bunch of log messages indicating what the scheduler is doing as it runs. You can also pause and quit (watch out, quitting will close the whole window).
 
 # Visualization (Optional)
 
-We provide a Python Jupyter notebook to help visualize task scheduling behavior. This can be found in the plot/ directory.
+We provide a Jupyter notebook to help visualize task scheduling behavior. This can be found in the plot/ directory. In the notebook you will find a premade plot from data we took, but if you want to take your own data you can copy the print log output from Renode and paste it into sample_data.txt, then run the plotting code in the Jupyter notebook to visualize it.
 
 # Testing
 
-Testing done with cmake for queue library. Everything else can't be tested well with unit tests, so we did behavioral testing using plotting. Found in tests/ directory.
+We tested our RTOS in two different ways. The first is unit tests using Criterion, which we used to validate our queue implementation. The rest of our code is heavily hardware-dependent and not easily tested with regular unit tests, so we opted for a more behavioral testing approach using our visualization code.
+
+Criterion unit tests:
+- A note on this: while our general scheduler code is compiled with Make, our Criterion test code is separately compiled with CMake. We did this because we are familiar with how to set up Criterion with CMake and have heard it can be finicky to set up with Make. However, this has presented one issue, which is that our CMake setup isn't set up to work with libopencm3, meaning that we can't compile any of our function libraries that need to include libopencm3. We spent some time trying to either get our Make setup to include Criterion or get our CMake setup to include libopencm3 (which would let us test the C logic around the hardwarde functions, but still not the hardware functions themselves), but ultimately we decided this was not worth our time to set up. Our code outside of the queue implementation (ie the scheduler, the interrupts, and the tasks) is mostly made up of hardware functions we can't test with unit tests anyway, and the logic in there that is unit testable is simple enough that we felt our time was better spent on behavioral testing (described below).
+- Our criterion unit tests for the queue library are in the tests/ folder (test_queue).
+
+Behavioral testing with plots:
+- Since much of our scheduler behavior is governed by interrupts that are not unit-testable, we felt a different testing approach was necessary. We ran our scheduler many times, each time isolating a single component or small set of components of our system, plotting the resulting behavior, and comparing that to our expectations for how it should act. Although this approach doesn't give us as fine-grained insight into our system as unit tests, we believe these tests are sufficient to validate that our scheduler works as intended.
+- The results from this test are also in the tests/ folder. {TODO where are the data files, where are the plots (jupyter notebook prob)}.
