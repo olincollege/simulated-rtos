@@ -7,7 +7,7 @@
 #include <libopencm3/stm32/usart.h>
 
 /* Define the short task period to be 3 ticks = 0.6 ms*/
-const int SHORT_TASK_PERIOD = 3;
+const int SHORT_TASK_PERIOD = 15;
 
 void tim2_setup(void) {
   /* Enable TIM2 clock. */
