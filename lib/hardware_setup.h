@@ -1,6 +1,6 @@
 #pragma once
 
-/* Short task period*/
+/* Set how often the TIM3 timer adds a short task to the queue.*/
 extern const int SHORT_TASK_PERIOD;
 
 /**

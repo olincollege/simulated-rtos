@@ -11,16 +11,21 @@ enum { MAX_SHORT_TASK = 15 };
 // A pointer to a task function, which takes in a tcb and returns void
 typedef void (*TaskFunc)(struct TaskControlBlock*);
 
+// This priority functionality is currently unused but kept in case we want to
+// add task priorities in the future.
 typedef enum { WARNING_PRIORITY = 1, REGULAR_PRIORITY = 3 } TaskPriority;
 
 typedef struct TaskControlBlock {
-  TaskFunc func;
-  TaskPriority priority;
-  int is_available;
-  int curr_num;
-  struct QueueNode* my_node;
-  struct TaskControlBlock* next_task;
-  // task ID
+  TaskFunc func;          // The task function to run
+  TaskPriority priority;  // Currently unused
+  int is_available;  // Only used for short tasks, marks if the preallocacted
+                     // tcb node is being used already
+  int curr_num;      // The current "state" of the running task (0 if it hasn't
+                     // started)
+  struct QueueNode*
+      my_node;  // Pointer to the wrapper queue node the task is inside
+  struct TaskControlBlock* next_task;  // For short tasks only -- next task in
+                                       // the linked list of preallocated tasks
 } TaskControlBlock;
 
 /**

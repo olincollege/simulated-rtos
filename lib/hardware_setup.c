@@ -64,8 +64,8 @@ void tim3_setup(void) {
   /* Set prescaler to 5 mHz */
   timer_set_prescaler(TIM3, ((rcc_apb1_frequency * 2) / 5000));
 
-  /* Set period to SHORT_TASK_PERIOD=3 ticks => 0.6ms */
-  timer_set_period(TIM3, SHORT_TASK_PERIOD);  // 3 ticks * 0.2ms = 0.6ms
+  /* Set period to SHORT_TASK_PERIOD=15 ticks => 3ms */
+  timer_set_period(TIM3, SHORT_TASK_PERIOD);  // 15 ticks * 0.2ms = 3ms
 
   /* Enable interrupt when timer overflows */
   timer_enable_irq(TIM3, TIM_DIER_UIE);
