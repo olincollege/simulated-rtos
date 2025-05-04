@@ -46,8 +46,13 @@ void long_task(TaskControlBlock* long_task_tcb);
 void short_task(TaskControlBlock* short_task_tcb);
 
 /**
- * @brief Simulate a task that gets executed right after short task gets
- * executed.
+ * @brief Simulate a task that is dependent on the short task.
  *
+ * This task behaves identically to the short task, printing numbers from 1 to
+ * 100 with support for preemption and resumption via tcb->curr_num. However, it
+ * is constrained to execute *immediately after* the short task without any
+ * other task running in between. This simulates a task that is "bundled" with
+ * the short task, where the short task must complete before this dependent task
+ * runs, and no tasks can run in between these two tasks.
  */
 void dependent_task(TaskControlBlock* dependent_task_tcb);

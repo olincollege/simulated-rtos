@@ -5,8 +5,8 @@
 #include "task.h"
 
 typedef struct QueueNode {
-  struct TaskControlBlock* tcb;
-  struct QueueNode* next;
+  struct TaskControlBlock* tcb;  // a node contains a pointer to its own tcb
+  struct QueueNode* next;        // and a pointer to the next tcb in the queue
 } QueueNode;
 
 typedef struct {
@@ -15,7 +15,6 @@ typedef struct {
   size_t length;     // length of queue
 } Queue;
 
-// TODO remove stuff about warning priority if not using
 /**
  * @brief Enqueue a new task onto the queue.
  *
@@ -24,6 +23,9 @@ typedef struct {
  * front and the last element of the queue. If the task has a WARNING_PRIORITY,
  * it is inserted at the front of the queue, bypassing the regular queue order.
  * Otherwise, the task is added to the end of the queue.
+ *
+ * Although the current system does not use task priorities in the current
+ * tasks, this functionality is left in place for future extensibility.
  *
  * @param queue (Queue*): A pointer to the queue in which the new task should be
  *                        enqueued.
