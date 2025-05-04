@@ -6,10 +6,17 @@ import re
 import matplotlib.pyplot as plt
 
 def plot_rtos_log(filename, title="RTOS Gantt Chart"):
+    """
+    Generate a Gantt chart from a .txt file of log outputs from the RTOS in Renode.
+
+    Args:
+        filename: str representing the .txt file of data to plot.
+        title: str representing the desired title of the chart.
+    """
     # --- Step 1: Parse the log for events ---
     events = []
 
-    with open(filename, 'r') as f:
+    with open(filename, 'r', encoding="UTF-8") as f:
         for line in f:
             line = line.strip()
             tim2_interrupt = re.search(r'Tim2 running\. Time: (\d+)', line)
@@ -76,7 +83,7 @@ def plot_rtos_log(filename, title="RTOS Gantt Chart"):
             single_events[task].append(time)
 
     # --- Step 3: Plot using matplotlib ---
-    fig, ax = plt.subplots(figsize=(10, 5))
+    _, ax = plt.subplots(figsize=(10, 5))
 
     colors = {'Long Task': 'skyblue', 'Short Task': 'lightcoral', 'Dependent Task': 'purple'}
     y_pos = {'Long Task': 0, 'Short Task': 1, 'Dependent Task': 2}
