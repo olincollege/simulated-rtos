@@ -7,6 +7,7 @@
 
 // Flag used by tim2_isr to mark when a task function should yield. Task
 // functions check for this often.
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
 extern volatile bool preempt_requested;
 
 /**
