@@ -8,13 +8,16 @@
 // NOLINTBEGIN(*-magic-numbers)
 
 // Define a task 4 (tasks 1-3 are defined in task.h)
-void task_4(void) {}
+TaskFunc task_1;
+TaskFunc task_2;
+TaskFunc task_3;
+TaskFunc task_4;
 
 // Set up tcb blocks for test queues
-TaskControlBlock tcb_1 = {task_1, 0, 0};
-TaskControlBlock tcb_2 = {task_2, 0, 0};
-TaskControlBlock tcb_3 = {task_3, 0, 0};
-TaskControlBlock tcb_4 = {task_4, 0, 0};
+TaskControlBlock tcb_1 = {&task_1, 0, 0, 0, NULL, NULL};
+TaskControlBlock tcb_2 = {&task_2, 0, 0, 0, NULL, NULL};
+TaskControlBlock tcb_3 = {&task_3, 0, 0, 0, NULL, NULL};
+TaskControlBlock tcb_4 = {&task_4, 0, 0, 0, NULL, NULL};
 
 /*
 Tests for enqueue
