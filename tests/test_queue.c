@@ -7,17 +7,20 @@
 
 // NOLINTBEGIN(*-magic-numbers)
 
-// Define a task 4 (tasks 1-3 are defined in task.h)
-TaskFunc task_1;
-TaskFunc task_2;
-TaskFunc task_3;
-TaskFunc task_4;
+// Define test tasks
+// They are cast to void to supress unused parameter compiler warnings
+void task_1(TaskControlBlock* tcb) { (void)tcb; }
+void task_2(TaskControlBlock* tcb) { (void)tcb; }
+void task_3(TaskControlBlock* tcb) { (void)tcb; }
+void task_4(TaskControlBlock* tcb) { (void)tcb; }
 
 // Set up tcb blocks for test queues
-TaskControlBlock tcb_1 = {&task_1, 0, 0, 0, NULL, NULL};
-TaskControlBlock tcb_2 = {&task_2, 0, 0, 0, NULL, NULL};
-TaskControlBlock tcb_3 = {&task_3, 0, 0, 0, NULL, NULL};
-TaskControlBlock tcb_4 = {&task_4, 0, 0, 0, NULL, NULL};
+// NOLINTBEGIN(cppcoreguidelines-avoid-non-const-global-variables)
+TaskControlBlock tcb_1 = {task_1, 0, 0, 0, NULL, NULL};
+TaskControlBlock tcb_2 = {task_2, 0, 0, 0, NULL, NULL};
+TaskControlBlock tcb_3 = {task_3, 0, 0, 0, NULL, NULL};
+TaskControlBlock tcb_4 = {task_4, 0, 0, 0, NULL, NULL};
+// NOLINTEND(cppcoreguidelines-avoid-non-const-global-variables)
 
 /*
 Tests for enqueue

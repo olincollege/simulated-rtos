@@ -34,7 +34,7 @@ set(CMAKE_C_CLANG_TIDY "clang-tidy")
 
 # Include files to be tested
 add_library(queue ../lib/queue.c ../lib/queue.h)
-add_library(task ../lib/task.c ../lib/task.h)
+add_library(task ../lib/task_testing_version.c ../lib/task.h)
 target_link_libraries(queue task)
 
 include(CTest)
