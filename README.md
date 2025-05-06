@@ -77,4 +77,4 @@ Criterion unit tests:
 Behavioral testing with plots:
 
 - Since much of our scheduler behavior is governed by interrupts that are not unit-testable, we felt a different testing approach was necessary. We ran our scheduler many times, each time isolating a single component or small set of components of our system, plotting the resulting behavior, and comparing that to our expectations for how it should act. Although this approach doesn't give us as fine-grained insight into our system as unit tests, we believe these tests are sufficient to validate that our scheduler works as intended.
-- The resulting data files are in the plot/ folder and the resulting plots can be found in the jupyter notebook.
+- The resulting data files are in the tests/behavioral_test_data folder and the resulting plots can be found in the jupyter notebook tests/behavioral_tests.ipynb.
